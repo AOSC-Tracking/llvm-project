@@ -47,6 +47,7 @@ MCOPT(bool, NoDeprecatedWarn)
 MCOPT(bool, NoTypeCheck)
 MCOPT(std::string, ABIName)
 MCOPT(std::string, AsSecureLogFile)
+MCOPT(bool, MipsPC64Relocation)
 
 llvm::mc::RegisterMCTargetOptionsFlags::RegisterMCTargetOptionsFlags() {
 #define MCBINDOPT(NAME)                                                        \
@@ -128,6 +129,13 @@ llvm::mc::RegisterMCTargetOptionsFlags::RegisterMCTargetOptionsFlags() {
       "as-secure-log-file", cl::desc("As secure log file name"), cl::Hidden);
   MCBINDOPT(AsSecureLogFile);
 
+  static cl::opt<bool> MipsPC64Relocation(
+      "mips-pc64-rel", cl::Hidden,
+      cl::desc(
+          "Whether to MIPS 64-bit PC-relative relocations"),
+      cl::init(true));
+  MCBINDOPT(MipsPC64Relocation);
+
 #undef MCBINDOPT
 }
 
@@ -146,6 +154,7 @@ MCTargetOptions llvm::mc::InitMCTargetOptionsFromFlags() {
   Options.EmitDwarfUnwind = getEmitDwarfUnwind();
   Options.EmitCompactUnwindNonCanonical = getEmitCompactUnwindNonCanonical();
   Options.AsSecureLogFile = getAsSecureLogFile();
+  Options.MipsPC64Relocation = getMipsPC64Relocation();
 
   return Options;
 }

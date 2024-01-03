@@ -19,7 +19,8 @@ MCTargetOptions::MCTargetOptions()
       PreserveAsmComments(true), Dwarf64(false),
       EmitDwarfUnwind(EmitDwarfUnwindType::Default),
       MCUseDwarfDirectory(DefaultDwarfDirectory),
-      EmitCompactUnwindNonCanonical(false) {}
+      EmitCompactUnwindNonCanonical(false),
+      MipsPC64Relocation(true) {}
 
 StringRef MCTargetOptions::getABIName() const {
   return ABIName;
