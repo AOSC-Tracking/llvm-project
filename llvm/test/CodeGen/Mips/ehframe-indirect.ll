@@ -1,30 +1,40 @@
 ; RUN: llc -mtriple=mipsel-linux-gnu < %s -asm-verbose -relocation-model=pic | \
 ; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-O32,O32 %s
+; RUN: llc -mtriple=mipsel-linux-android < %s -asm-verbose -relocation-model=pic | \
+; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-O32,O32 %s
 ; RUN: llc -mtriple=mips64el-linux-gnu -target-abi=n32 < %s -asm-verbose -relocation-model=pic | \
-; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-NEW,N32 %s
+; RUN:     FileCheck -check-prefixes=ALL,N32,N32REL %s
 ; RUN: llc -mtriple=mips64el-linux-gnu < %s -asm-verbose -relocation-model=pic | \
-; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-NEW,N64 %s
+; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-NEW,N64,N64REL %s
+; RUN: llc -mtriple=mips64el-linux-android < %s -asm-verbose -relocation-model=pic | \
+; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-NEW,N64,N64REL %s
 ; RUN: llc -mtriple=mips64el-linux-gnu < %s -asm-verbose -relocation-model=pic | \
-; RUN:     FileCheck -check-prefixes=ALL,LINUX,LINUX-NEW,N64 %s
-; RUN: llc -mtriple=mips-unknown-freebsd11.0 < %s -asm-verbose -relocation-model=pic | \
-; RUN:     FileCheck -check-prefixes=ALL,FREEBSD,FREEBSD-O32,O32 %s
+; RUN:     FileCheck -check-prefixes=ALL,N64,N64REL %s
 ; RUN: llc -mtriple=mips64-unknown-freebsd11.0 < %s -asm-verbose -relocation-model=pic | \
-; RUN:     FileCheck -check-prefixes=ALL,FREEBSD,FREEBSD-NEW,N64 %s
+; RUN:     FileCheck -check-prefixes=ALL,N64,N64REL %s
+
+; RUN: llc -mtriple=mips64-linux-gnu -target-abi=n32 -mips-pc64-rel=false \
+; RUN:     -asm-verbose -relocation-model=pic < %s | \
+; RUN:     FileCheck -check-prefixes=ALL,N32,N32ABS %s
+; RUN: llc -mtriple=mips64-linux-gnu -mips-pc64-rel=false \
+; RUN:     -asm-verbose -relocation-model=pic < %s | \
+; RUN:     FileCheck -check-prefixes=ALL,N64,N64ABS %s
 
 @_ZTISt9exception = external constant ptr
 
 define i32 @main() personality ptr @__gxx_personality_v0 {
 ; ALL: .cfi_startproc
 
-; Linux must rely on the assembler/linker converting the encodings.
-; LINUX: .cfi_personality 128, DW.ref.__gxx_personality_v0
-; LINUX-O32: .cfi_lsda 0, $exception0
-; LINUX-NEW: .cfi_lsda 0, .Lexception0
-
-; FreeBSD can (and must) be more direct about the encodings it wants.
-; FREEBSD: .cfi_personality 155, DW.ref.__gxx_personality_v0
-; FREEBSD-O32: .cfi_lsda 27, $exception0
-; FREEBSD-NEW: .cfi_lsda 27, .Lexception0
+; O32: .cfi_personality 155, DW.ref.__gxx_personality_v0
+; O32: .cfi_lsda 27, $exception0
+; N32REL: .cfi_personality 155, DW.ref.__gxx_personality_v0
+; N32REL: .cfi_lsda 27, .Lexception0
+; N32ABS: .cfi_personality 128, DW.ref.__gxx_personality_v0
+; N32ABS: .cfi_lsda 0, .Lexception0
+; N64REL: .cfi_personality 155, DW.ref.__gxx_personality_v0
+; N64REL: .cfi_lsda 27, .Lexception0
+; N64ABS: .cfi_personality 128, DW.ref.__gxx_personality_v0
+; N64ABS: .cfi_lsda 0, .Lexception0
 
 entry:
   invoke void @foo() to label %cont unwind label %lpad

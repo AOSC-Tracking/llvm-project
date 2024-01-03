@@ -89,6 +89,9 @@ public:
   // functions on Darwins.
   bool EmitCompactUnwindNonCanonical : 1;
 
+  // Whether to use MIPS 64-bit PC-relative relocations
+  bool MipsPC64Relocation : 1;
+
   MCTargetOptions();
 
   /// getABIName - If this returns a non-empty string this represents the

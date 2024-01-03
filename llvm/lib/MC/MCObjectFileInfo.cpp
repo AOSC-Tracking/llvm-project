@@ -337,14 +337,11 @@ void MCObjectFileInfo::initELFMCObjectFileInfo(const Triple &T, bool Large) {
   case Triple::mipsel:
   case Triple::mips64:
   case Triple::mips64el:
-    // We cannot use DW_EH_PE_sdata8 for the large PositionIndependent case
-    // since there is no R_MIPS_PC64 relocation (only a 32-bit version).
-    if (PositionIndependent && !Large)
-      FDECFIEncoding = dwarf::DW_EH_PE_pcrel | dwarf::DW_EH_PE_sdata4;
-    else
-      FDECFIEncoding = Ctx->getAsmInfo()->getCodePointerSize() == 4
-                           ? dwarf::DW_EH_PE_sdata4
-                           : dwarf::DW_EH_PE_sdata8;
+    FDECFIEncoding = Ctx->getAsmInfo()->getCodePointerSize() == 4
+                         ? dwarf::DW_EH_PE_sdata4
+                         : dwarf::DW_EH_PE_sdata8;
+    if (PositionIndependent && (Ctx->getMipsPC64Relocation() || T.isMIPS32()))
+      FDECFIEncoding |= dwarf::DW_EH_PE_pcrel;
     break;
   case Triple::ppc64:
   case Triple::ppc64le:
