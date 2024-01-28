@@ -43,6 +43,7 @@ uintptr_t GetCurrentProcess(void);
 #endif
 
 #if defined(__linux__) && defined(__mips__)
+#define __USE_MISC
 #include <sys/cachectl.h>
 #include <sys/syscall.h>
 #include <unistd.h>
