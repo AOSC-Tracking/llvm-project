@@ -40,7 +40,15 @@ public:
 #endif
 
   // Determine the architecture of the thread given by its ID.
+#ifdef __mips64
+  static llvm::Expected<ArchSpec> DetermineArchitecture(lldb::tid_t tid) {
+    return llvm::createStringError(
+        llvm::inconvertibleErrorCode(),
+        "Architecture does not support this function");
+  }
+#else
   static llvm::Expected<ArchSpec> DetermineArchitecture(lldb::tid_t tid);
+#endif
 
   // Invalidates cached values in register context data structures
   virtual void InvalidateAllRegisters(){}
