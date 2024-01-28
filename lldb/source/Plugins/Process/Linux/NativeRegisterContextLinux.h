@@ -32,7 +32,12 @@ public:
   // given thread.
   static std::unique_ptr<NativeRegisterContextLinux>
   CreateHostNativeRegisterContextLinux(const ArchSpec &target_arch,
-                                       NativeThreadLinux &native_thread);
+                                       NativeThreadLinux &native_thread)
+#ifdef __mips64
+  { llvm_unreachable("mips64 unsupported"); }
+#else
+  ;
+#endif
 
   // Determine the architecture of the thread given by its ID.
   static llvm::Expected<ArchSpec> DetermineArchitecture(lldb::tid_t tid);
