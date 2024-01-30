@@ -1380,7 +1380,6 @@ static void readConfigs(opt::InputArgList &args) {
   config->zStartStopGC =
       getZFlag(args, "start-stop-gc", "nostart-stop-gc", true);
   config->zStartStopVisibility = getZStartStopVisibility(args);
-  config->zText = getZFlag(args, "text", "notext", true);
   config->zWxneeded = hasZOption(args, "wxneeded");
   setUnresolvedSymbolPolicy(args);
   config->power10Stubs = args.getLastArgValue(OPT_power10_stubs_eq) != "no";
@@ -1709,6 +1708,7 @@ static void setConfigs(opt::InputArgList &args) {
       args.hasFlag(OPT_toc_optimize, OPT_no_toc_optimize, m == EM_PPC64);
   config->pcRelOptimize =
       args.hasFlag(OPT_pcrel_optimize, OPT_no_pcrel_optimize, m == EM_PPC64);
+  config->zText = getZFlag(args, "text", "notext", m != EM_MIPS);
 }
 
 static bool isFormatBinary(StringRef s) {
