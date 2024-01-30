@@ -208,15 +208,15 @@ void TargetLoweringObjectFileELF::Initialize(MCContext &Ctx,
     // that the eh_frame section can be read-only. DW.ref.personality will be
     // generated for relocation.
     PersonalityEncoding = dwarf::DW_EH_PE_indirect;
-    // FIXME: The N64 ABI probably ought to use DW_EH_PE_sdata8 but we can't
-    //        identify N64 from just a triple.
-    TTypeEncoding = dwarf::DW_EH_PE_indirect | dwarf::DW_EH_PE_pcrel |
-                    dwarf::DW_EH_PE_sdata4;
+    static const auto Sdata = TgtM.getProgramPointerSize() < sizeof(uint64_t)
+                                  ? dwarf::DW_EH_PE_sdata4
+                                  : dwarf::DW_EH_PE_sdata8;
+    TTypeEncoding = dwarf::DW_EH_PE_indirect | dwarf::DW_EH_PE_pcrel | Sdata;
 
     if (isPositionIndependent() &&
         (TgtM.Options.MCOptions.MipsPC64Relocation || TgtM.getTargetTriple().isMIPS32())) {
-      PersonalityEncoding |= dwarf::DW_EH_PE_pcrel | dwarf::DW_EH_PE_sdata4;
-      LSDAEncoding = dwarf::DW_EH_PE_pcrel | dwarf::DW_EH_PE_sdata4;
+      PersonalityEncoding |= dwarf::DW_EH_PE_pcrel | Sdata;
+      LSDAEncoding = dwarf::DW_EH_PE_pcrel | Sdata;
     }
     break;
   case Triple::ppc64:
