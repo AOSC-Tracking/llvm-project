@@ -456,15 +456,3 @@
 // RUN:     -mrelax-pic-calls -mno-relax-pic-calls 2>&1 \
 // RUN:   | FileCheck --check-prefix=CHECK-NO-RELAX-PIC-CALLS %s
 // CHECK-NO-RELAX-PIC-CALLS: "-mllvm" "-mips-jalr-reloc=0"
-//
-// -mips-pc64-rel
-// RUN: %clang -target mips-unknown-linux-gnu -### -c %s \
-// RUN:     -no-mips-pc64-rel -mips-pc64-rel 2>&1 \
-// RUN:   | FileCheck --check-prefix=CHECK-PC64-REL %s
-// CHECK-PC64-REL-NOT: "-mllvm" "-mips-pc64-rel=false"
-//
-// -no-mips-pc64-rel
-// RUN: %clang -target mips-unknown-linux-gnu -### -c %s \
-// RUN:     -mips-pc64-rel -no-mips-pc64-rel 2>&1 \
-// RUN:   | FileCheck --check-prefix=CHECK-NO-PC64-REL %s
-// CHECK-NO-PC64-REL: "-mllvm" "-mips-pc64-rel=false"

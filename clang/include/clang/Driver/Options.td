@@ -4351,9 +4351,6 @@ def mno_relax_pic_calls : Flag<["-"], "mno-relax-pic-calls">,
   Group<m_mips_Features_Group>,
   HelpText<"Do not produce relaxation hints for linkers to try optimizing PIC "
            "call sequences into direct calls (MIPS only)">, Flags<[HelpHidden]>;
-defm mips_pc64_rel : BoolOption<"", "mips-pc64-rel",
-CodeGenOpts<"MipsPC64Relocation">, DefaultTrue,
-PosFlag<SetTrue, [CC1Option, CC1AsOption], "Use MIPS 64-bit PC-relative relocations">, NegFlag<SetFalse>>;
 def mglibc : Flag<["-"], "mglibc">, Group<m_libc_Group>, Flags<[HelpHidden]>;
 def muclibc : Flag<["-"], "muclibc">, Group<m_libc_Group>, Flags<[HelpHidden]>;
 def module_file_info : Flag<["-"], "module-file-info">, Flags<[NoXarchOption,CC1Option]>, Group<Action_Group>,
