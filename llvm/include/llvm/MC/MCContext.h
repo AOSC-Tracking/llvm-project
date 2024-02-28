@@ -791,7 +791,6 @@ public:
   unsigned getGenDwarfFileNumber() { return GenDwarfFileNumber; }
   EmitDwarfUnwindType emitDwarfUnwindInfo() const;
   bool emitCompactUnwindNonCanonical() const;
-  bool getMipsPC64Relocation() const;
 
   void setGenDwarfFileNumber(unsigned FileNumber) {
     GenDwarfFileNumber = FileNumber;

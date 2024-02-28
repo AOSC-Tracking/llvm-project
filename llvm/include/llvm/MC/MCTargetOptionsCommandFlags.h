@@ -51,8 +51,6 @@ std::string getABIName();
 
 std::string getAsSecureLogFile();
 
-bool getMipsPC64Relocation();
-
 /// Create this object with static storage to register mc-related command
 /// line options.
 struct RegisterMCTargetOptionsFlags {

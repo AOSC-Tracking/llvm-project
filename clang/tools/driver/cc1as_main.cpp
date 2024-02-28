@@ -147,8 +147,6 @@ struct AssemblerInvocation {
   // Note: maybe overriden by other constraints.
   unsigned EmitCompactUnwindNonCanonical : 1;
 
-  unsigned MipsPC64Relocation : 1;
-
   /// The name of the relocation model to use.
   std::string RelocationModel;
 
@@ -413,7 +411,6 @@ static bool ExecuteAssemblerImpl(AssemblerInvocation &Opts,
   MCTargetOptions MCOptions;
   MCOptions.EmitDwarfUnwind = Opts.EmitDwarfUnwind;
   MCOptions.EmitCompactUnwindNonCanonical = Opts.EmitCompactUnwindNonCanonical;
-  MCOptions.MipsPC64Relocation = Opts.MipsPC64Relocation;
   MCOptions.AsSecureLogFile = Opts.AsSecureLogFile;
 
   std::unique_ptr<MCAsmInfo> MAI(

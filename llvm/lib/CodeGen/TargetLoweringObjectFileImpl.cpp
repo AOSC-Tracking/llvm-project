@@ -208,13 +208,19 @@ void TargetLoweringObjectFileELF::Initialize(MCContext &Ctx,
     // that the eh_frame section can be read-only. DW.ref.personality will be
     // generated for relocation.
     PersonalityEncoding = dwarf::DW_EH_PE_indirect;
+    // The N64 ABI probably ought to use DW_EH_PE_sdata8 so we detect
+    // pointer size here.
     static const auto Sdata = TgtM.getProgramPointerSize() < sizeof(uint64_t)
                                   ? dwarf::DW_EH_PE_sdata4
                                   : dwarf::DW_EH_PE_sdata8;
     TTypeEncoding = dwarf::DW_EH_PE_indirect | dwarf::DW_EH_PE_pcrel | Sdata;
+    // We don't support PC-relative LSDA references in GAS so we use the default
+    // DW_EH_PE_absptr for those.
 
-    if (isPositionIndependent() &&
-        (TgtM.Options.MCOptions.MipsPC64Relocation || TgtM.getTargetTriple().isMIPS32())) {
+    // FreeBSD must be explicit about the data size and using pcrel since it's
+    // assembler/linker won't do the automatic conversion that the Linux tools
+    // do.
+    if (TgtM.getTargetTriple().isOSFreeBSD()) {
       PersonalityEncoding |= dwarf::DW_EH_PE_pcrel | Sdata;
       LSDAEncoding = dwarf::DW_EH_PE_pcrel | Sdata;
     }

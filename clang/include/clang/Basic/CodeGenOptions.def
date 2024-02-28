@@ -118,9 +118,6 @@ CODEGENOPT(ForceDwarfFrameSection , 1, 0) ///< Set when -fforce-dwarf-frame is
 ///< Set when -femit-compact-unwind-non-canonical is enabled.
 CODEGENOPT(EmitCompactUnwindNonCanonical, 1, 0)
 
-///< Set when -mips-pc64-rel is enabled.
-CODEGENOPT(MipsPC64Relocation, 1, 0)
-
 ///< Set when -femit-dwarf-unwind is passed.
 ENUM_CODEGENOPT(EmitDwarfUnwind, llvm::EmitDwarfUnwindType, 2,
                 llvm::EmitDwarfUnwindType::Default)

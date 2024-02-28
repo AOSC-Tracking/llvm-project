@@ -486,7 +486,6 @@ static bool initTargetOptions(DiagnosticsEngine &Diags,
   Options.MCOptions.CommandLineArgs = CodeGenOpts.CommandLineArgs;
   Options.MCOptions.AsSecureLogFile = CodeGenOpts.AsSecureLogFile;
   Options.MisExpect = CodeGenOpts.MisExpect;
-  Options.MCOptions.MipsPC64Relocation = CodeGenOpts.MipsPC64Relocation;
 
   return true;
 }
