@@ -663,7 +663,6 @@ macro(add_custom_libcxx name prefix)
     CMAKE_SHARED_LINKER_FLAGS
     CMAKE_MODULE_LINKER_FLAGS
     CMAKE_EXE_LINKER_FLAGS
-    CMAKE_INSTALL_PREFIX
     CMAKE_MAKE_PROGRAM
     CMAKE_LINKER
     CMAKE_AR
@@ -733,6 +732,7 @@ macro(add_custom_libcxx name prefix)
                -DLLVM_INCLUDE_TESTS=OFF
                -DLLVM_INCLUDE_DOCS=OFF
                ${LIBCXX_CMAKE_ARGS}
+    INSTALL_COMMAND ""
     STEP_TARGETS configure build
     BUILD_ALWAYS 1
     USES_TERMINAL_CONFIGURE 1
